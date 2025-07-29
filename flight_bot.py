@@ -280,7 +280,7 @@ async def find(update: Update, context: ContextTypes.DEFAULT_TYPE, from_callback
         countries_text += f" y {len(active_countries) - 3} más"
 
     await send_to.reply_text(
-        f"🔍 Buscando vuelos desde *viernes a domingo* para *{month_name.title()} {year}*...\n"
+        f"🔍 Buscando vuelos desde *viernes a domingo* para *{month_name.title()} {year}* por menos de 150€...\n"
         f"📊 {len(weekends)} fines de semana encontrados\n"
         f"🎯 Destinos: {countries_text}", 
         parse_mode="Markdown"
@@ -323,7 +323,9 @@ async def find(update: Update, context: ContextTypes.DEFAULT_TYPE, from_callback
                 "inboundDepartureDateStart": inbound_start.strftime("%Y-%m-%dT%H:%M:%S"),
                 "inboundDepartureDateEnd": inbound_end.strftime("%Y-%m-%dT%H:%M:%S"),
                 "transportTypes": "FLIGHT",
-                "limit": "5"
+                "limit": "5",
+                "priceStart": "0",
+                "priceEnd":"150"
             }
 
             headers = {
@@ -517,7 +519,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     welcome_text = (
         "🤖 **Bot de Vuelos - Fines de Semana**\n\n"
-        "✈️ Busca automáticamente vuelos desde Alicante para todos los fines de semana de un mes\n\n"
+        "✈️ Busca automáticamente vuelos por menos de 150€ desde Alicante y Murcia para todos los fines de semana de un mes\n\n"
         "📅 **Selecciona un mes:**"
     )
     
@@ -557,14 +559,14 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
         "**¿Cómo funciona?**\n"
         "1. Selecciona un mes con `/start`\n"
         "2. El bot busca automáticamente todos los viernes-domingos\n"
-        "3. Te muestra los vuelos más baratos disponibles\n\n"
+        "3. Te muestra los vuelos más baratos disponibles con un precio máximo de 150€\n\n"
         "**Configuración actual:**\n"
         f"• Destinos activos: {active_count}/{total_available}\n"
-        "• Origen: Alicante (ALC)\n"
+        "• Origen: Alicante (ALC) + Murcia(RMU)\n"
         "• Vuelos: Viernes 17:00-23:59 → Domingo 11:00-23:59\n"
-        "• Orden: Por precio (más barato primero)\n"
+        "• Orden: Por precio (más barato primero), con un precio máximo de 150€\n"
         "• Límite: 5 vuelos por fin de semana\n\n"
-        "💡 **Tip:** Configura tus destinos preferidos con `/destinos` para personalizar las búsquedas."
+        "💡 **Tip:** Configura tus destinos preferidos con `/destinations` para personalizar las búsquedas."
     )
     
     await update.message.reply_text(help_text, parse_mode="Markdown")
