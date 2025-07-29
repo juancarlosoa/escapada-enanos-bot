@@ -1,10 +1,10 @@
 {
   "Country:FR": true,
-  "Country:IT": true,
-  "Country:PT": true,
-  "Country:GB": true,
-  "Country:DE": true,
-  "Country:NL": true,
+  "Country:IT": false,
+  "Country:PT": false,
+  "Country:GB": false,
+  "Country:DE": false,
+  "Country:NL": false,
   "Country:BE": false,
   "Country:CH": false,
   "Country:AT": false,
@@ -17,6 +17,6 @@
   "Country:NO": false,
   "Country:SE": false,
   "Country:FI": false,
-  "Country:IS": true,
+  "Country:IS": false,
   "Country:IE": false
 }

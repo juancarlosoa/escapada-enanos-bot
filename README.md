@@ -61,7 +61,7 @@ Este bot permite a los usuarios buscar automáticamente vuelos de fin de semana 
 
 4. **Ejecuta el bot**:
    ```bash
-   python flight_bot.py
+   py flight_bot.py
    ```
 
 ## 📋 Comandos Disponibles
