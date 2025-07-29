@@ -35,24 +35,27 @@ Este bot permite a los usuarios buscar automáticamente vuelos de fin de semana 
 ## 🚀 Instalación
 
 1. **Clona el repositorio**:
+
    ```bash
    git clone <repository-url>
    cd flight-bot
    ```
 
 2. **Instala las dependencias**:
+
    ```bash
    pip install python-telegram-bot python-dotenv requests
    ```
 
 3. **Configura las variables de entorno**:
-   
+
    Crea un archivo `.env` en la raíz del proyecto:
+
    ```env
    BOT_TOKEN=tu_token_de_telegram_aqui
    RAPIDAPI_KEY=tu_clave_de_rapidapi_aqui
    ```
-   
+
    - Obtén un token de bot desde [@BotFather](https://t.me/botfather)
    - Regístrate en [RapidAPI](https://rapidapi.com) y suscríbete a "Kiwi.com Cheap Flights"
 
@@ -63,12 +66,12 @@ Este bot permite a los usuarios buscar automáticamente vuelos de fin de semana 
 
 ## 📋 Comandos Disponibles
 
-| Comando | Descripción |
-|---------|-------------|
-| `/start` | Menú principal con selección de meses |
-| `/find agosto` | Buscar vuelos para un mes específico |
-| `/destinations` | Configurar países de destino |
-| `/help` | Mostrar ayuda y configuración actual |
+| Comando         | Descripción                           |
+| --------------- | ------------------------------------- |
+| `/start`        | Menú principal con selección de meses |
+| `/find agosto`  | Buscar vuelos para un mes específico  |
+| `/destinations` | Configurar países de destino          |
+| `/help`         | Mostrar ayuda y configuración actual  |
 
 ## 🎯 Destinos Disponibles
 
@@ -85,13 +88,13 @@ flight-bot/
 ├── flight_bot.py          # Código principal del bot
 ├── destinations.json      # Configuración de destinos del usuario
 ├── .env                   # Variables de entorno (no incluir en Git)
-├── .env.example          # Ejemplo de variables de entorno
 └── README.md             # Este archivo
 ```
 
 ## ⚙️ Configuración
 
 ### destinations.json
+
 Archivo generado automáticamente que almacena las preferencias del usuario:
 
 ```json
@@ -119,6 +122,7 @@ Archivo generado automáticamente que almacena las preferencias del usuario:
 Para agregar nuevos destinos al bot:
 
 1. **Modifica `DESTINATIONS_MASTER`** en el código:
+
    ```python
    DESTINATIONS_MASTER = {
        "Country:XX": {"name": "🏳️ Nuevo País", "default": False},
@@ -133,6 +137,7 @@ Para agregar nuevos destinos al bot:
 ### Variables de entorno
 
 Crea un archivo `.env` para documentar las variables necesarias:
+
 ```env
 # Token del bot de Telegram (obtener desde @BotFather)
 BOT_TOKEN=
@@ -146,6 +151,7 @@ RAPIDAPI_KEY=
 ## 📝 Logs
 
 El bot incluye logging detallado para debugging:
+
 - Operaciones de carga/guardado de configuración
 - Errores de API y recuperación
 
