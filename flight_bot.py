@@ -8,7 +8,6 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 from dotenv import load_dotenv
 
-# Cargar variables de entorno
 load_dotenv()
 
 # Logging config
@@ -24,9 +23,6 @@ MONTHS = {
     "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
 }
 DESTINATIONS_FILE = "destinations.json"
-
-# Configuración maestra de destinos disponibles (nombres y valores por defecto)
-# Solo cambiar aquí para añadir/quitar/modificar destinos
 DESTINATIONS_MASTER = {
     "Country:FR": {"name": "🇫🇷 Francia", "default": True},
     "Country:IT": {"name": "🇮🇹 Italia", "default": True},
