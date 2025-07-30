@@ -8,7 +8,6 @@ from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 from dotenv import load_dotenv
 
-# Cargar variables de entorno
 load_dotenv()
 
 # Logging config

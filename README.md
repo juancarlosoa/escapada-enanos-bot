@@ -1,6 +1,6 @@
 # 🤖 Bot de Vuelos - Fines de Semana
 
-Un bot de Telegram que automatiza la búsqueda de vuelos económicos desde Alicante y Murcia para todos los fines de semana de un mes específico.
+Un bot de Telegram que automatiza la búsqueda de vuelos económicos desde Alicante y Murcia para todos los fines de semana de un mes específico. https://t.me/escapadasEnanosBot
 
 ## 📖 Descripción
 
