@@ -24,6 +24,7 @@ MONTHS = {
     "julio": 7, "agosto": 8, "septiembre": 9, "octubre": 10, "noviembre": 11, "diciembre": 12
 }
 DESTINATIONS_FILE = "destinations.json"
+BOT_PASSWORD = os.getenv('BOT_PASSWORD')
 
 # Configuración maestra de destinos disponibles (nombres y valores por defecto)
 # Solo cambiar aquí para añadir/quitar/modificar destinos
@@ -582,7 +583,7 @@ if __name__ == "__main__":
         print("❌ Error: RAPIDAPI_KEY no encontrado en variables de entorno")
         print("💡 Crea un archivo .env con: RAPIDAPI_KEY=tu_clave_aqui")
         exit(1)
-    
+
     # Validar configuración al iniciar el bot
     logging.info("🚀 Iniciando bot...")
     logging.info("🔧 Validando configuración de destinos...")
