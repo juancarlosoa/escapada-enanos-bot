@@ -7,6 +7,7 @@ import requests
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes, CallbackQueryHandler
 from dotenv import load_dotenv
+from functools import wraps
 
 load_dotenv()
 
@@ -24,9 +25,9 @@ MONTHS = {
 }
 DESTINATIONS_FILE = "destinations.json"
 BOT_PASSWORD = os.getenv('BOT_PASSWORD')
+AUTHORIZED_USERS = set()
 
 # Configuración maestra de destinos disponibles (nombres y valores por defecto)
-# Solo cambiar aquí para añadir/quitar/modificar destinos
 DESTINATIONS_MASTER = {
     "Country:FR": {"name": "🇫🇷 Francia", "default": True},
     "Country:IT": {"name": "🇮🇹 Italia", "default": True},
@@ -49,6 +50,35 @@ DESTINATIONS_MASTER = {
     "Country:IS": {"name": "🇮🇸 Islandia", "default": True},
     "Country:IE": {"name": "🇮🇪 Irlanda", "default": False}
 }
+
+async def login(update: Update, context: ContextTypes.DEFAULT_TYPE):
+    """Permite al usuario autenticarse con la contraseña del bot"""
+    user_id = update.effective_user.id
+
+    if user_id in AUTHORIZED_USERS:
+        await update.message.reply_text("✅ Ya estás autenticado.")
+        return
+
+    if not context.args:
+        await update.message.reply_text("🔐 Usa el comando así: `/login tu_contraseña`", parse_mode="Markdown")
+        return
+
+    password = context.args[0]
+    if password == BOT_PASSWORD:
+        AUTHORIZED_USERS.add(user_id)
+        await update.message.reply_text("🔓 Acceso concedido. Ya puedes usar el bot.")
+    else:
+        await update.message.reply_text("❌ Contraseña incorrecta. Inténtalo de nuevo.")
+
+def require_authentication(handler):
+    @wraps(handler)
+    async def wrapper(update: Update, context: ContextTypes.DEFAULT_TYPE, *args, **kwargs):
+        user_id = update.effective_user.id
+        if user_id not in AUTHORIZED_USERS:
+            await update.effective_message.reply_text("🚫 Necesitas autenticarte con `/login tu_contraseña`.")
+            return
+        return await handler(update, context, *args, **kwargs)
+    return wrapper
 
 def get_available_destinations():
     """Obtiene todos los códigos de destinos disponibles"""
@@ -233,6 +263,7 @@ def parse_and_filter_flights(data):
     
     return filtered
 
+@require_authentication
 async def find(update: Update, context: ContextTypes.DEFAULT_TYPE, from_callback=False):
     """Comando principal para buscar vuelos"""
     send_to = update.callback_query.message if from_callback else update.message
@@ -372,6 +403,7 @@ async def find(update: Update, context: ContextTypes.DEFAULT_TYPE, from_callback
     else:
         await send_to.reply_text(f"✅ Búsqueda completada. Se encontraron vuelos para {total_found}/{len(weekends)} fines de semana.")
 
+@require_authentication
 async def destinations(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Comando para configurar destinos"""
     # Validar configuración antes de mostrar
@@ -490,6 +522,7 @@ async def handle_toggle(update: Update, context: ContextTypes.DEFAULT_TYPE):
         await query.answer("🔄 Configuración restablecida a valores por defecto", show_alert=True)
         await destinations(update, context)
 
+@require_authentication
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     """Comando de inicio con botones de meses en grid"""
     # Validar configuración al inicio
@@ -571,6 +604,8 @@ async def help_command(update: Update, context: ContextTypes.DEFAULT_TYPE):
     
     await update.message.reply_text(help_text, parse_mode="Markdown")
 
+#####################################
+
 if __name__ == "__main__":
     # Verificar que las variables de entorno estén configuradas
     if not BOT_TOKEN:
@@ -598,6 +633,7 @@ if __name__ == "__main__":
     app.add_handler(CallbackQueryHandler(handle_toggle, pattern="^toggle_"))
     app.add_handler(CallbackQueryHandler(handle_toggle, pattern="^reset_defaults$"))
     app.add_handler(CallbackQueryHandler(handle_button))
-    
+    app.add_handler(CommandHandler("login", login))
+
     print("🤖 Bot iniciado ✅ Usa /start")
     app.run_polling()
